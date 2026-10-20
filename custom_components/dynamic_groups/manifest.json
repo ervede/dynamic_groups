@@ -1,0 +1,18 @@
+{
+  "domain": "dynamic_groups",
+  "name": "Dynamic Groups",
+  "codeowners": [
+    "@ervede"
+  ],
+  "config_flow": true,
+  "dependencies": [
+    "group"
+  ],
+  "documentation": "https://github.com/ervede/dynamic_groups",
+  "integration_type": "service",
+  "iot_class": "calculated",
+  "issue_tracker": "https://github.com/ervede/dynamic_groups/issues",
+  "requirements": [],
+  "single_config_entry": true,
+  "version": "2.0.0"
+}

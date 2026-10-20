@@ -1,0 +1,173 @@
+{
+  "config": {
+    "step": {
+      "user": {
+        "title": "Dynamic Groups",
+        "description": "This sets up Dynamic Groups. Afterwards, open the integration and use the Add buttons to create groups from labels and areas."
+      }
+    },
+    "abort": {
+      "already_configured": "Dynamic Groups is already set up.",
+      "single_instance_allowed": "Dynamic Groups is already set up."
+    }
+  },
+  "config_subentries": {
+    "label_domain": {
+      "entry_type": "Label + domain group",
+      "initiate_flow": {
+        "user": "Add label + domain group",
+        "reconfigure": "Reconfigure label + domain group"
+      },
+      "step": {
+        "user": {
+          "title": "Label + domain group",
+          "description": "Group every entity that has a label, limited to one domain.",
+          "data": {
+            "label": "Label",
+            "domain": "Domain",
+            "name": "Group name"
+          },
+          "data_description": {
+            "label": "Entities carrying this label are included.",
+            "domain": "Only entities of this domain are included, for example light or switch. You can type a domain that is not listed.",
+            "name": "Name of the group. Its entity ID starts with group.dg_"
+          }
+        },
+        "reconfigure": {
+          "title": "Label + domain group",
+          "description": "Group every entity that has a label, limited to one domain.",
+          "data": {
+            "label": "Label",
+            "domain": "Domain",
+            "name": "Group name"
+          },
+          "data_description": {
+            "label": "Entities carrying this label are included.",
+            "domain": "Only entities of this domain are included, for example light or switch. You can type a domain that is not listed.",
+            "name": "Name of the group. Its entity ID starts with group.dg_"
+          }
+        }
+      },
+      "error": {
+        "unknown_label": "That label no longer exists.",
+        "unknown_area": "That area no longer exists.",
+        "invalid_domain": "Use a domain such as light, switch or sensor (lowercase letters, digits and underscores).",
+        "invalid_name": "Enter a name that contains letters or digits.",
+        "name_exists": "Another dynamic group already uses this name.",
+        "no_labels": "No labels exist yet. Create one under Settings > Areas, labels & zones > Labels, then try again.",
+        "no_areas": "No areas exist yet. Create one under Settings > Areas, labels & zones > Areas, then try again."
+      },
+      "abort": {
+        "reconfigure_successful": "Group updated.",
+        "entry_not_loaded": "Dynamic Groups is not loaded. Enable it and try again.",
+        "nothing_to_choose": "There is nothing to choose from yet."
+      }
+    },
+    "area_domain": {
+      "entry_type": "Area + domain group",
+      "initiate_flow": {
+        "user": "Add area + domain group",
+        "reconfigure": "Reconfigure area + domain group"
+      },
+      "step": {
+        "user": {
+          "title": "Area + domain group",
+          "description": "Group every entity in an area, limited to one domain.",
+          "data": {
+            "area": "Area",
+            "domain": "Domain",
+            "name": "Group name"
+          },
+          "data_description": {
+            "area": "Entities in this area are included.",
+            "domain": "Only entities of this domain are included, for example light or switch. You can type a domain that is not listed.",
+            "name": "Name of the group. Its entity ID starts with group.dg_"
+          }
+        },
+        "reconfigure": {
+          "title": "Area + domain group",
+          "description": "Group every entity in an area, limited to one domain.",
+          "data": {
+            "area": "Area",
+            "domain": "Domain",
+            "name": "Group name"
+          },
+          "data_description": {
+            "area": "Entities in this area are included.",
+            "domain": "Only entities of this domain are included, for example light or switch. You can type a domain that is not listed.",
+            "name": "Name of the group. Its entity ID starts with group.dg_"
+          }
+        }
+      },
+      "error": {
+        "unknown_label": "That label no longer exists.",
+        "unknown_area": "That area no longer exists.",
+        "invalid_domain": "Use a domain such as light, switch or sensor (lowercase letters, digits and underscores).",
+        "invalid_name": "Enter a name that contains letters or digits.",
+        "name_exists": "Another dynamic group already uses this name.",
+        "no_labels": "No labels exist yet. Create one under Settings > Areas, labels & zones > Labels, then try again.",
+        "no_areas": "No areas exist yet. Create one under Settings > Areas, labels & zones > Areas, then try again."
+      },
+      "abort": {
+        "reconfigure_successful": "Group updated.",
+        "entry_not_loaded": "Dynamic Groups is not loaded. Enable it and try again.",
+        "nothing_to_choose": "There is nothing to choose from yet."
+      }
+    },
+    "area_label": {
+      "entry_type": "Area + label group",
+      "initiate_flow": {
+        "user": "Add area + label group",
+        "reconfigure": "Reconfigure area + label group"
+      },
+      "step": {
+        "user": {
+          "title": "Area + label group",
+          "description": "Group the entities in an area that also have a label.",
+          "data": {
+            "area": "Area",
+            "label": "Label",
+            "domain": "Domain",
+            "name": "Group name"
+          },
+          "data_description": {
+            "area": "Entities in this area are included.",
+            "label": "Entities carrying this label are included.",
+            "domain": "Optional. Leave empty to include every domain, or pick one such as light.",
+            "name": "Name of the group. Its entity ID starts with group.dg_"
+          }
+        },
+        "reconfigure": {
+          "title": "Area + label group",
+          "description": "Group the entities in an area that also have a label.",
+          "data": {
+            "area": "Area",
+            "label": "Label",
+            "domain": "Domain",
+            "name": "Group name"
+          },
+          "data_description": {
+            "area": "Entities in this area are included.",
+            "label": "Entities carrying this label are included.",
+            "domain": "Optional. Leave empty to include every domain, or pick one such as light.",
+            "name": "Name of the group. Its entity ID starts with group.dg_"
+          }
+        }
+      },
+      "error": {
+        "unknown_label": "That label no longer exists.",
+        "unknown_area": "That area no longer exists.",
+        "invalid_domain": "Use a domain such as light, switch or sensor (lowercase letters, digits and underscores).",
+        "invalid_name": "Enter a name that contains letters or digits.",
+        "name_exists": "Another dynamic group already uses this name.",
+        "no_labels": "No labels exist yet. Create one under Settings > Areas, labels & zones > Labels, then try again.",
+        "no_areas": "No areas exist yet. Create one under Settings > Areas, labels & zones > Areas, then try again."
+      },
+      "abort": {
+        "reconfigure_successful": "Group updated.",
+        "entry_not_loaded": "Dynamic Groups is not loaded. Enable it and try again.",
+        "nothing_to_choose": "There is nothing to choose from yet."
+      }
+    }
+  }
+}
