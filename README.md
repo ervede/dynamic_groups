@@ -132,6 +132,14 @@ pip install -r requirements_test.txt
 pytest tests
 ```
 
+### Releasing
+
+Releases are created automatically. To publish a new version, change `version`
+in `custom_components/dynamic_groups/manifest.json` (for example `2.1.0` to
+`2.2.0`) and push to `main`. The Release workflow runs the tests and validation,
+then creates the tag `v2.2.0` and a GitHub release whose notes list the commits
+since the previous release. HACS shows that version to users.
+
 ## License
 
 [MIT](LICENSE)

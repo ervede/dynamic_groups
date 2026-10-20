@@ -1,0 +1,99 @@
+name: Release
+
+# Creates a GitHub release automatically when the version in manifest.json
+# changes on main. To publish a new version: bump "version" in
+# custom_components/dynamic_groups/manifest.json and push. The release is only
+# created after the tests and validation pass.
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - custom_components/dynamic_groups/manifest.json
+      - .github/workflows/release.yml
+  workflow_dispatch:
+
+permissions: {}
+
+jobs:
+  version:
+    name: Check version
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+    outputs:
+      version: ${{ steps.check.outputs.version }}
+      exists: ${{ steps.check.outputs.exists }}
+    steps:
+      - uses: actions/checkout@v5
+      - id: check
+        run: |
+          version=$(jq -r .version custom_components/dynamic_groups/manifest.json)
+          if ! [[ "$version" =~ ^[0-9]+\.[0-9]+\.[0-9]+$ ]]; then
+            echo "manifest version '$version' is not x.y.z" >&2
+            exit 1
+          fi
+          if gh api "repos/${GITHUB_REPOSITORY}/git/ref/tags/v${version}" >/dev/null 2>&1; then
+            exists=true
+          else
+            exists=false
+          fi
+          echo "version=${version}" >> "$GITHUB_OUTPUT"
+          echo "exists=${exists}" >> "$GITHUB_OUTPUT"
+          echo "Version ${version}, tag already exists: ${exists}"
+        env:
+          GH_TOKEN: ${{ github.token }}
+
+  tests:
+    name: Tests
+    needs: version
+    if: needs.version.outputs.exists == 'false'
+    permissions:
+      contents: read
+    uses: ./.github/workflows/tests.yml
+
+  validate:
+    name: Validate
+    needs: version
+    if: needs.version.outputs.exists == 'false'
+    permissions:
+      contents: read
+    uses: ./.github/workflows/validate.yml
+
+  release:
+    name: Create release
+    needs: [version, tests, validate]
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    steps:
+      - uses: actions/checkout@v5
+        with:
+          fetch-depth: 0
+      - name: Create release
+        env:
+          GH_TOKEN: ${{ github.token }}
+          VERSION: ${{ needs.version.outputs.version }}
+        run: |
+          tag="v${VERSION}"
+          previous=$(git tag --list 'v*' --sort=-v:refname | grep -vx "$tag" | head -n 1 || true)
+
+          {
+            echo "## Changes"
+            echo
+            if [ -n "$previous" ]; then
+              git log "${previous}..HEAD" --no-merges --pretty='- %s'
+            else
+              git log HEAD --no-merges --pretty='- %s'
+            fi
+            echo
+            if [ -n "$previous" ]; then
+              echo "**Full changelog:** https://github.com/${GITHUB_REPOSITORY}/compare/${previous}...${tag}"
+            fi
+          } > notes.md
+
+          gh release create "$tag" \
+            --target "$GITHUB_SHA" \
+            --title "$tag" \
+            --notes-file notes.md \
+            --latest
