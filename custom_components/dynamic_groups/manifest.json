@@ -1,6 +1,9 @@
 {
   "domain": "dynamic_groups",
   "name": "Dynamic Groups",
+  "categories": [
+    "helpers"
+  ],
   "codeowners": [
     "@ervede"
   ],
