@@ -30,7 +30,7 @@
           "data_description": {
             "label": "Entities carrying this label are included.",
             "domain": "Only entities of this domain are included, for example light or switch. You can type a domain that is not listed.",
-            "name": "Name of the group. Its entity ID starts with group.dg_"
+            "name": "Name of the group. Home Assistant derives the entity ID from it."
           }
         },
         "reconfigure": {
@@ -44,7 +44,7 @@
           "data_description": {
             "label": "Entities carrying this label are included.",
             "domain": "Only entities of this domain are included, for example light or switch. You can type a domain that is not listed.",
-            "name": "Name of the group. Its entity ID starts with group.dg_"
+            "name": "Name of the group. Home Assistant derives the entity ID from it."
           }
         }
       },
@@ -81,7 +81,7 @@
           "data_description": {
             "area": "Entities in this area are included.",
             "domain": "Only entities of this domain are included, for example light or switch. You can type a domain that is not listed.",
-            "name": "Name of the group. Its entity ID starts with group.dg_"
+            "name": "Name of the group. Home Assistant derives the entity ID from it."
           }
         },
         "reconfigure": {
@@ -95,7 +95,7 @@
           "data_description": {
             "area": "Entities in this area are included.",
             "domain": "Only entities of this domain are included, for example light or switch. You can type a domain that is not listed.",
-            "name": "Name of the group. Its entity ID starts with group.dg_"
+            "name": "Name of the group. Home Assistant derives the entity ID from it."
           }
         }
       },
@@ -134,7 +134,7 @@
             "area": "Entities in this area are included.",
             "label": "Entities carrying this label are included.",
             "domain": "Optional. Leave empty to include every domain, or pick one such as light.",
-            "name": "Name of the group. Its entity ID starts with group.dg_"
+            "name": "Name of the group. Home Assistant derives the entity ID from it."
           }
         },
         "reconfigure": {
@@ -150,7 +150,7 @@
             "area": "Entities in this area are included.",
             "label": "Entities carrying this label are included.",
             "domain": "Optional. Leave empty to include every domain, or pick one such as light.",
-            "name": "Name of the group. Its entity ID starts with group.dg_"
+            "name": "Name of the group. Home Assistant derives the entity ID from it."
           }
         }
       },

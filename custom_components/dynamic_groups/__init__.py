@@ -10,6 +10,7 @@ import logging
 from types import MappingProxyType
 
 from homeassistant.config_entries import ConfigEntry, ConfigSubentry
+from homeassistant.const import Platform
 from homeassistant.core import HomeAssistant, callback
 from homeassistant.util import slugify
 
@@ -27,6 +28,19 @@ from .coordinator import DynamicGroupsCoordinator
 from .group_manager import GroupManager, async_purge_registry_entries
 
 _LOGGER = logging.getLogger(__name__)
+
+# One platform per domain that Home Assistant has a group type for. Groups with
+# any other domain filter fall back to plain group.* entities.
+PLATFORMS: list[Platform] = [
+    Platform.BINARY_SENSOR,
+    Platform.COVER,
+    Platform.FAN,
+    Platform.LIGHT,
+    Platform.LOCK,
+    Platform.MEDIA_PLAYER,
+    Platform.SWITCH,
+    Platform.VALVE,
+]
 
 
 @dataclass(slots=True)
@@ -83,11 +97,15 @@ async def async_setup_entry(
     coordinator = DynamicGroupsCoordinator(hass, entry)
     manager = GroupManager(hass)
 
+    entry.runtime_data = DynamicGroupsData(coordinator=coordinator, manager=manager)
+
     # Raises ConfigEntryNotReady (and is retried by Home Assistant) on failure.
     await coordinator.async_config_entry_first_refresh()
-    await manager.async_sync(coordinator.data)
 
-    entry.runtime_data = DynamicGroupsData(coordinator=coordinator, manager=manager)
+    # The platforms only register themselves with the manager; the manager
+    # then adds the entities, so it can choose typed or plain group entities.
+    await hass.config_entries.async_forward_entry_setups(entry, PLATFORMS)
+    await manager.async_sync(coordinator.data)
 
     @callback
     def _async_apply_update() -> None:
@@ -117,7 +135,7 @@ async def async_unload_entry(
 ) -> bool:
     """Unload a config entry, taking its groups out of the state machine."""
     await entry.runtime_data.manager.async_unload()
-    return True
+    return await hass.config_entries.async_unload_platforms(entry, PLATFORMS)
 
 
 async def async_remove_entry(hass: HomeAssistant, entry: ConfigEntry) -> None:

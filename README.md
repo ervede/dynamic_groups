@@ -44,15 +44,29 @@ Requires Home Assistant **2025.3 or newer** (config subentries).
 Each group has its own entry in the integration's list with **Reconfigure** and
 **Delete**. Changes apply immediately, without reloading the integration.
 
-Groups are named `group.dg_<name>`, for example "Living Room Lights" gives
-`group.dg_living_room_lights`.
+## What the groups look like
 
-## Unique IDs
+Groups become the same kind of entity you get from **Settings > Devices &
+services > Helpers > Group**, so they have history and activity, a detail dialog
+with clickable members, and they work with the normal service calls (turning a
+light group on and off, brightness, and so on).
 
-Every group is registered in the entity registry with a unique ID, so the
-settings dialog works: rename it, change its entity ID, set an area, hide or
-disable it. These customisations survive restarts, reloads and membership
-updates. Deleting a group in the integration also removes its registry entry.
+The entity type follows the domain you choose:
+
+| Domain filter | Entity |
+|---|---|
+| `light`, `switch`, `binary_sensor`, `cover`, `fan`, `lock`, `media_player`, `valve` | a real entity of that type, for example `light.living_room_lights` |
+| anything else, or no domain (area + label only) | a plain `group.dg_<name>` entity |
+
+The entity ID comes from the group name. Every group has a unique ID and is
+listed under its own entry on the integration page, so you can rename it, change
+its entity ID, assign an area, hide or disable it from the settings dialog. Those
+changes survive restarts, reloads and membership updates. Deleting a group in the
+integration also removes its entity.
+
+When members are added or removed the entity is rebuilt in the background. It
+keeps its entity ID and your customisations, but it is briefly `unavailable`
+while this happens.
 
 ## How membership is decided
 
@@ -71,12 +85,22 @@ updates. Deleting a group in the integration also removes its registry entry.
 
 ## Notes on how groups are created
 
-Home Assistant's public `group.set` service cannot attach a unique ID, so the
-integration creates group entities with the `group` integration's own `Group`
-class. That is an internal API; if a future Home Assistant release changes it,
-group creation fails with a clear error in the log and nothing else is affected.
+The groups are built with the classes of Home Assistant's own `group`
+integration, which are internal to Home Assistant. If a future release changes
+one of them, the affected domain falls back to plain `group.*` entities and an
+error is logged, and nothing else is affected.
 
-## Upgrading from 1.0.0
+## Upgrading
+
+### From 2.0.x
+
+Groups with a supported domain used to be `group.dg_<name>`. They are now typed
+entities, for example `light.<name>`. The old `group.dg_*` entities are removed
+automatically, so **update dashboards, automations and scripts** that used them
+(a Mushroom chip using `group.dg_livingroom_lights` must now use
+`light.livingroom_lights`). Groups without a supported domain keep their entity ID.
+
+### From 1.0.0
 
 Version 1.0.0 stored groups in the integration's options. They are migrated to
 the new per-group entries automatically on first start. The old groups had no
